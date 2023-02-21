@@ -1,16 +1,16 @@
 # This block provisions document db cluster on aws 
 
-#resource "aws_docdb_cluster" "docdb" {
-#  cluster_identifier      = "roboshop-${var.ENV}-docdb"
-# engine                  = "docdb"
- # master_username         = "admin1"
-  #master_password         = "roboshop1"
-  #vpc_security_group_ids  = [aws_security_group.allow_mongodb.id]
-  #db_subnet_group_name    = aws_docdb_subnet_group.docdb.id
+resource "aws_docdb_cluster" "docdb" {
+  cluster_identifier      = "roboshop-${var.ENV}-docdb"
+   engine                  = "docdb"
+   master_username         = "admin1"
+   master_password         = "roboshop1"
+   vpc_security_group_ids  = [aws_security_group.allow_mongodb.id]
+   db_subnet_group_name    = aws_docdb_subnet_group.docdb.id
 #   backup_retention_period = 5                        Uncomment only when you need backups
 #   preferred_backup_window = "07:00-09:00"
-  #skip_final_snapshot     = false
-#}
+   skip_final_snapshot     = false
+}
 
 # Creates Subnet Group 
 resource "aws_docdb_subnet_group" "docdb" {
@@ -23,12 +23,12 @@ resource "aws_docdb_subnet_group" "docdb" {
 }
 
 # Provision the nodes needed for doc-db and add them to the docdb cluster.
-#resource "aws_docdb_cluster_instance" "cluster_instances" {
- # count              = 1
-  #identifier         = "roboshop-${var.ENV}-docdb-nodes"
-  #cluster_identifier = aws_docdb_cluster.docdb.id
-  #instance_class     = "db.t3.medium"
-#}
+resource "aws_docdb_cluster_instance" "cluster_instances" {
+  count              = 1
+  identifier         = "roboshop-${var.ENV}-docdb-nodes"
+  cluster_identifier = aws_docdb_cluster.docdb.id
+  instance_class     = "db.t3.medium"
+}
 
 # Our application is not designed to work with Document DB. That's because of the fact that AWS don't let youto create Document DB without Username and password
 # Out cart and catalogue code is not designed to talk to mongodb with credentials.

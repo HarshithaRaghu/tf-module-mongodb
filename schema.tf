@@ -10,8 +10,8 @@ resource "null_resource" "docdb-schema" {
         curl -s -L -o /tmp/mongodb.zip "https://github.com/stans-robot-project/mongodb/archive/main.zip"
         unzip -o mongodb.zip
         cd mongodb-main
-        mongo --ssl --host ${aws_docdb_cluster.docdb.endpoint}:27017 --sslCAFile /tmp/rds-combined-ca-bundle.pem --username ${local.DOCDB_USER} --password ${local.DOCDB_PASS} < catalogue.js 
-        mongo --ssl --host ${aws_docdb_cluster.docdb.endpoint}:27017 --sslCAFile /tmp/rds-combined-ca-bundle.pem --username ${local.DOCDB_USER} --password ${local.DOCDB_PASS} < users.js 
+        mongo --ssl --host ${local.DNS_NAME}:27017 --sslCAFile /tmp/rds-combined-ca-bundle.pem --username ${local.DOCDB_USER} --password ${local.DOCDB_PASS} < catalogue.js 
+        mongo --ssl --host ${local.DNS_NAME}:27017 --sslCAFile /tmp/rds-combined-ca-bundle.pem --username ${local.DOCDB_USER} --password ${local.DOCDB_PASS} < users.js 
         EOF
     }  
 }
